@@ -7,7 +7,9 @@ sempre que o TSE publica um arquivo novo (hora de geração diferente). Cada pon
    "c": {"22": [votos, % dos válidos], "13": [votos, % dos válidos]}}
 O painel lê este arquivo para desenhar a evolução desde as 17h mesmo para quem abre a página depois.
 
-Uso: python3 recorder.py [--ele 6258] [--out historico.json] [--minutes 58] [--every 120] [--no-push]
+Uso: python3 recorder.py [--ele 6258] [--out historico.json] [--minutes 58 | --until-next 58] [--every 120] [--no-push]
+  --until-next M: roda até o próximo minuto M (horário de Brasília) que esteja a mais de 30 minutos de agora,
+  para que as execuções de hora em hora se encostem sem buracos.
 Para quando: o tempo acaba, ou o TSE marca a totalização como final (100% das seções), ou o arquivo já está final.
 """
 import argparse, json, os, subprocess, sys, time, urllib.request, urllib.error
@@ -116,6 +118,7 @@ def main():
     ap.add_argument('--out', default='historico.json')
     ap.add_argument('--minutes', type=float, default=58)
     ap.add_argument('--every', type=int, default=120)
+    ap.add_argument('--until-next', type=int, default=None)
     ap.add_argument('--no-push', action='store_true')
     a = ap.parse_args()
     path = os.path.join(HERE, a.out)
@@ -128,6 +131,11 @@ def main():
         log('o histórico já está final; nada a fazer')
         return
     end = time.time() + a.minutes * 60
+    if a.until_next is not None:
+        t = datetime.now(BRT) + timedelta(minutes=30)
+        t = t.replace(minute=a.until_next, second=0, microsecond=0) if t.minute <= a.until_next else (t + timedelta(hours=1)).replace(minute=a.until_next, second=0, microsecond=0)
+        end = t.timestamp()
+        log('esta execução vai até', t.strftime('%d/%m %H:%M'))
     mine, last_hg, errs = [], None, 0
     while True:
         final = False
