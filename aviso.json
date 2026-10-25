@@ -1,1 +1,7 @@
-{"ativo":false,"tipo":"alerta","titulo":"teste","texto":"teste de cache 2","atualizado":"2026-10-25T17:48:00-03:00"}
+{
+ "ativo": true,
+ "tipo": "alerta",
+ "titulo": "Apuração pausada.",
+ "texto": "O TSE suspendeu a totalização dos votos às 17h20, depois que o ministro Cristiano Zanin, do STF, determinou a prorrogação da votação até as 19h em todo o país, a pedido da coligação de Lula, por falhas no transporte público. O Ministério Público Eleitoral se manifestou contra a prorrogação. O TSE ainda não informou se as seções já fechadas vão reabrir nem quando a apuração será retomada, e o presidente do tribunal, ministro Nunes Marques, não se pronunciou até agora. Os votos já registrados continuam valendo. Os números parciais vêm de menos de 1% das urnas e não indicam tendência.",
+ "hora": "17h50"
+}
